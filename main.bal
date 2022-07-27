@@ -6,6 +6,6 @@ configurable string username = ?;
 configurable string password = ?;
 configurable string database = ?;
 
-public function main() {
-    insert:main(host, port, username, password, database);
+public function main() returns error? {
+    check insert:main(host, port, username, password, database);
 }

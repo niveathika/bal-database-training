@@ -4,22 +4,13 @@ import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
 import ballerina/time;
 
-public function main(string host, int port, string username, string password, string database) {
-    mysql:Client|sql:Error dbClient = new mysql:Client(host, username, password, database, port);
-    
-    if dbClient is sql:Error {
-        log:printError(dbClient.message());
-    } else {
-        sql:Error? err = insertCandidates(dbClient);
-        if err is sql:Error {
-            log:printError(err.message());
-        }
-        err = dbClient.close();
-    }
+public function main(string host, int port, string username, string password, string database) returns error? {
+    mysql:Client dbClient = check new mysql:Client(host, username, password, database, port);
+    check insertCandidates(dbClient);
+    check dbClient.close();
 }
 
 function insertCandidates(mysql:Client dbClient) returns sql:Error? {
-
     time:Date dob = {
         year: 1990,
         month: 1,
